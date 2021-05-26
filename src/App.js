@@ -1,25 +1,53 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
+import Biography from './components/Biography'
+import TextBox from './components/sub-components/TextBox'
+import PhoneNumber from './components/sub-components/PhoneNumber'
+// import the library
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      previewMode: false,
+      photoURL: '',
+      biography: [
+        { placeholder: 'First Name',
+          type: TextBox,
+          value: 'Benjamin',
+        },
+        { placeholder: 'Last Name',
+          type: TextBox,
+          value: '',
+        },
+        { placeholder: 'Phone Number',
+          type: PhoneNumber,
+          value: '',
+        },
+        { placeholder: 'Job',
+          type: TextBox,
+          value: '',
+        },
+
+      ]
+    }
+  };
+
+  render() {
+    const { previewMode, photoURL, biography } = this.state;
+
+    return (
+      <div className="App">
+        <h1>Curriculum Vitae App</h1>
+        <Biography
+        previewMode={previewMode}
+        photoURL={photoURL}
+        biography={biography}
+        />
+      </div>
+    );
+  }
 }
 
 export default App;
