@@ -1,10 +1,15 @@
 import './App.css';
 import React from 'react';
 import Biography from './components/Biography'
-import TextBox from './components/sub-components/TextBox'
-import PhoneNumber from './components/sub-components/PhoneNumber'
+import Education from './components/Education'
+import InputBox from './components/sub-components/InputBox'
 import Photo from './components/sub-components/Photo'
 import PreviewButton from './components/PreviewButton'
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faPhoneAlt, faEnvelope, faAddressBook } from '@fortawesome/free-solid-svg-icons/';
+
+library.add(faPhoneAlt, faEnvelope, faAddressBook);
 
 class App extends React.Component {
   constructor() {
@@ -13,44 +18,90 @@ class App extends React.Component {
     this.state = {
       previewMode: false,
       photoURL: '',
-      biographyLeft: [
-        { placeholder: 'First Name',
-          type: TextBox,
+      biography: [
+        { id: 'First Name',
+          type: InputBox,
+          previewStyle: 'font-size: 28px;',
           value: '',
         },
-        { placeholder: 'Last Name',
-          type: TextBox,
+        { id: 'Last Name',
+          type: InputBox,
+          previewStyle: 'font-size: 28px;',
           value: '',
         },
-        { placeholder: 'Phone Number',
-          type: PhoneNumber,
+        { id: 'Phone Number',
+          type: InputBox,
+          previewStyle: `
+          font-size: 12px;
+          padding: 8px 0;
+          `,
+          icon: 'phone-alt',
           value: '',
         },
-        { placeholder: 'Job',
-          type: TextBox,
+        { id: 'Job',
+          type: InputBox,
+          previewStyle: `
+          font-size: 24px;
+          padding: 8px 0;
+          `,
           value: '',
         },
-      ],
-      biographyRight: [
-          { placeholder: 'Address Line 1',
-            type: TextBox,
-            value: '',
-          },
-          { placeholder: 'Address Line 2',
-            type: TextBox,
-            value: '',
-          },
-          { placeholder: 'E-mail',
-            type: TextBox,
-            value: '',
-          },
-          { placeholder: 'LinkedIn',
-            type: TextBox,
-            value: '',
-          },
-      ]
-    }
+        { id: 'Address Line 1',
+          type: InputBox,
+          previewStyle: `
+          font-size: 16px;
+          padding: .5rem 0 0 0;
+          `,
+          value: '',
+        },
+        { id: 'Address Line 2',
+          type: InputBox,
+          previewStyle: `
+          font-size: 16px;
+          padding: 0 0 0 0;
+          `,
+          value: '',
+        },
+        { id: 'E-mail',
+          type: InputBox,
+          icon: 'envelope',
+          previewStyle: `
+          font-size: 16px;
+          padding: .5rem 0;
+          `,
+          value: '',
+        },
+        { id: 'LinkedIn',
+          type: InputBox,
+          value: '',
+          size: '25',
+        }
+        ],
 
+      education: [
+          {
+            id: 'University or School',
+            type: InputBox,
+            value: '',
+          },
+          {
+            id: 'Location',
+            type: InputBox,
+            value: '',
+          },
+        ],
+
+      sampleData: [
+        { id: 'First Name', value: 'Benjamin'},
+        { id: 'Last Name', value: 'Smith'},
+        { id: 'Phone Number', value: '+44 123456789'},
+        { id: 'Job', value: 'Web Developer'}, 
+        { id: 'Address Line 1', value: 'Via Giovanni Segantini'},
+        { id: 'Address Line 2', value: 'Milano'},
+        { id: 'E-mail', value: 'ben_g_smith@msn.com'},
+        { id: 'LinkedIn', value: 'https://www.linkedin.com/in/ben-smith-0b579729/'},
+      ],
+      }
   };
 
   togglePreviewMode = (e) => {
@@ -59,15 +110,69 @@ class App extends React.Component {
     })
   }
 
+  toggleSampleData = (e) => {
+
+    let biography = this.state.biography;
+    let sampleData = this.state.sampleData; 
+
+    biography.forEach(item => {
+      sampleData.forEach(sample => {
+          if (sample.id === item.id) {
+          if (e.target.checked) { 
+            this.setUpdate(item.id, sample.value)
+          } else { 
+            this.setUpdate(item.id, '')
+          }
+        }
+      })
+    })
+  }
+
+  setUpdate = (itemid, value) => {
+    const biography = this.state.biography; 
+    const education = this.state.education;
+    console.log('updating');
+
+    biography.forEach(item => {
+      if(item.id === itemid) {
+        item.value = value; 
+      }
+    })
+
+    education.forEach(item => {
+      if(item.id === itemid) {
+        item.value = value; 
+      }
+    })
+
+    this.setState({
+      biography: biography,
+      education: education,
+    });
+  }
+
   render() {
-    const { previewMode, photoURL, biographyLeft, biographyRight } = this.state;
+    const { previewMode, photoURL, biography, education } = this.state;
 
     return (
       <div className="App">
         <h1>Curriculum Vitae App</h1>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <PreviewButton 
           togglePreviewMode={this.togglePreviewMode}
         />
+          <div>
+          <label>Sample data</label>
+          <input
+            type='checkbox' 
+            onChange = {(e) => this.toggleSampleData(e)}
+            />
+          </div>
+        </div>
         <div className='biography-container'>
           <Photo 
             previewMode={previewMode}
@@ -75,18 +180,27 @@ class App extends React.Component {
           />
           <Biography
             previewMode={previewMode}
-            biography={biographyLeft}
+            biography={biography}
+            setUpdate={this.setUpdate}
+            margin={'0 0 0 1.5rem'}
+            selection={['First Name', 'Last Name', 'Phone Number', 'Job']}
           />
           <Biography
             previewMode={previewMode}
-            biography={biographyRight}
+            biography={biography}
+            setUpdate={this.setUpdate}
+            margin={'0 0 0 auto'}
+            selection={['Address Line 1', 'Address Line 2', 'E-mail', 'LinkedIn']}
           />
-
-        <div className='work-experience-container'>
-
-
         </div>
-        </div>
+
+        <Education
+          previewMode={previewMode}
+          education={education}
+          setUpdate={this.setUpdate}
+        >
+
+        </Education>
       </div>
     );
   }

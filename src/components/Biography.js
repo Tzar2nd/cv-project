@@ -1,27 +1,45 @@
 import '../App.css'
-import TextBox from './sub-components/TextBox'
+import InputBox from './sub-components/InputBox'
+import styled from 'styled-components';
+
+const BiographyContainer = styled.div`
+display: flex;
+flex-direction: column;
+margin: ${props => props.margin };
+`;
 
 const Biography = (props) => {
-    
     let {
         previewMode, 
         biography,
+        margin,
+        selection,
+        setUpdate,
     } = props; 
 
     return (
-        <div className = 'biography'>
+        <BiographyContainer
+            margin={margin}  
+        >
             {biography.map(item => {
-            const InputType = item.type;
-            return (
-                <InputType
-                    key={`${Math.floor((Math.random() * 1000))}-min`}
-                    placeholder={item.placeholder}
-                    value={item.value}
-                    previewMode={previewMode}
-                />
-            )
-            })}
-        </div>
+
+            if (selection.includes(item.id)) {
+                return (
+                    <InputBox
+                        id={item.id}
+                        key={item.id}
+                        FAicon={item.icon}
+                        value={item.value}
+                        size={item.size}
+                        previewMode={previewMode}
+                        previewStyle={item.previewStyle}
+                        setUpdate={setUpdate}
+                    />
+                )
+            } return '';
+            })  
+        }
+        </BiographyContainer>
     )
 }
 
