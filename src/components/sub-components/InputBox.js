@@ -13,7 +13,7 @@ const Input = styled.input`
     ${props => (props.previewMode) && `
         outline: none; 
         margin: 0rem;
-        padding: .1rem;
+        padding: 0rem;
         color: black !important;
         ${props.previewStyle}
         `}
@@ -23,6 +23,7 @@ const Input = styled.input`
 const InputBox = (props) => {
     let {
         id,
+        placeholder,
         value,
         FAicon,
         previewMode,
@@ -36,19 +37,20 @@ const InputBox = (props) => {
             display: 'flex',
             alignItems: 'center',
         }}>
-            {(FAicon) &&
+            {(FAicon && !previewMode) &&
             <div>
                 <FontAwesomeIcon icon={FAicon} style={{
-                    margin: '0 0 0 -22px',
+                    margin: '0 0 0 -23px',
                     color: '#333',
                 }}/>
                 </div>
             }
             <div>
-                {console.log(value)}
             <Input
                 size={size !== '' ? size : '25'}
-                placeholder={id}
+                key={id}
+                id={id}
+                placeholder={placeholder}
                 previewMode={previewMode}
                 disabled={previewMode}
                 previewStyle={previewStyle}

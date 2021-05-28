@@ -1,5 +1,6 @@
 import './App.css';
 import React from 'react';
+import uniqid from 'uniqid';
 import Biography from './components/Biography'
 import Education from './components/Education'
 import InputBox from './components/sub-components/InputBox'
@@ -19,90 +20,123 @@ class App extends React.Component {
       previewMode: false,
       photoURL: '',
       biography: [
-        { id: 'First Name',
+        { id: uniqid(),
+          placeholder: 'First Name',
           type: InputBox,
           previewStyle: 'font-size: 28px;',
           value: '',
         },
-        { id: 'Last Name',
+        { id: uniqid(),
+          placeholder: 'Last Name',
           type: InputBox,
           previewStyle: 'font-size: 28px;',
           value: '',
         },
-        { id: 'Phone Number',
+        { id: uniqid(),
+          placeholder: 'Phone Number',
           type: InputBox,
           previewStyle: `
-          font-size: 12px;
-          padding: 8px 0;
+            font-size: 12px;
+            padding: 8px 0;
           `,
           icon: 'phone-alt',
           value: '',
         },
-        { id: 'Job',
+        { id: uniqid(),
+          placeholder: 'Job',
           type: InputBox,
           previewStyle: `
-          font-size: 24px;
-          padding: 8px 0;
+            font-size: 24px;
+            padding: 8px 0;
           `,
           value: '',
         },
-        { id: 'Address Line 1',
+        { id: uniqid(),
+          placeholder: 'Address Line 1',
           type: InputBox,
           previewStyle: `
-          font-size: 16px;
-          padding: .5rem 0 0 0;
+            font-size: 16px;
+            padding: .5rem 0 0 0;
           `,
           value: '',
         },
-        { id: 'Address Line 2',
+        { id: uniqid(),
+          placeholder: 'Address Line 2',
           type: InputBox,
           previewStyle: `
-          font-size: 16px;
-          padding: 0 0 0 0;
+            font-size: 16px;
+            padding: 0 0 0 0;
           `,
           value: '',
         },
-        { id: 'E-mail',
+        { id: uniqid(),
+          placeholder: 'E-mail',
           type: InputBox,
           icon: 'envelope',
           previewStyle: `
-          font-size: 16px;
-          padding: .5rem 0;
+            font-size: 16px;
+            padding: .5rem 0;
           `,
           value: '',
         },
-        { id: 'LinkedIn',
+        { id: uniqid(),
+          placeholder: 'LinkedIn',
           type: InputBox,
           value: '',
           size: '25',
         }
         ],
 
-      education: [
-          {
-            id: 'University or School',
-            type: InputBox,
-            value: '',
-          },
-          {
-            id: 'Location',
-            type: InputBox,
-            value: '',
-          },
-        ],
+      educationItem: {
+          id: uniqid(),
+          placeholder: '',
+          value: '',
+      },
+      education: [],
 
       sampleData: [
-        { id: 'First Name', value: 'Benjamin'},
-        { id: 'Last Name', value: 'Smith'},
-        { id: 'Phone Number', value: '+44 123456789'},
-        { id: 'Job', value: 'Web Developer'}, 
-        { id: 'Address Line 1', value: 'Via Giovanni Segantini'},
-        { id: 'Address Line 2', value: 'Milano'},
-        { id: 'E-mail', value: 'ben_g_smith@msn.com'},
-        { id: 'LinkedIn', value: 'https://www.linkedin.com/in/ben-smith-0b579729/'},
+        { placeholder: 'First Name', value: 'Benjamin'},
+        { placeholder: 'Last Name', value: 'Smith'},
+        { placeholder: 'Phone Number', value: '+44 123456789'},
+        { placeholder: 'Job', value: 'Web Developer'}, 
+        { placeholder: 'Address Line 1', value: 'Via Giovanni Segantini'},
+        { placeholder: 'Address Line 2', value: 'Milano'},
+        { placeholder: 'E-mail', value: 'ben_g_smith@msn.com'},
+        { placeholder: 'LinkedIn', value: 'https://www.linkedin.com/in/ben-smith-0b579729/'},
       ],
       }
   };
+
+  onCreateExperienceBlock = (e) => {
+    e.preventDefault();    // prevents refresh of page on button click 
+
+    this.setState(prevState => ({
+      education: [...prevState.education, 
+      {
+        id: uniqid(),
+        placeholder: 'Certificate',
+        value: '',
+      },
+      {
+        id: uniqid(),
+        placeholder: 'Location',
+        value: '',
+      },
+      {
+        id: uniqid(),
+        placeholder: 'From',
+        value: '',
+      },
+      {
+        id: uniqid(),
+        placeholder: 'To',
+        value: '',
+      },
+    ]
+    })
+    );
+  }
+
 
   togglePreviewMode = (e) => {
     this.setState({
@@ -111,13 +145,12 @@ class App extends React.Component {
   }
 
   toggleSampleData = (e) => {
-
     let biography = this.state.biography;
     let sampleData = this.state.sampleData; 
 
     biography.forEach(item => {
       sampleData.forEach(sample => {
-          if (sample.id === item.id) {
+          if (sample.placeholder === item.placeholder) {
           if (e.target.checked) { 
             this.setUpdate(item.id, sample.value)
           } else { 
@@ -131,7 +164,6 @@ class App extends React.Component {
   setUpdate = (itemid, value) => {
     const biography = this.state.biography; 
     const education = this.state.education;
-    console.log('updating');
 
     biography.forEach(item => {
       if(item.id === itemid) {
@@ -173,7 +205,7 @@ class App extends React.Component {
             />
           </div>
         </div>
-        <div className='biography-container'>
+        <div className='cv-content-container'>
           <Photo 
             previewMode={previewMode}
             photoURL={photoURL}
@@ -193,14 +225,22 @@ class App extends React.Component {
             selection={['Address Line 1', 'Address Line 2', 'E-mail', 'LinkedIn']}
           />
         </div>
-
+        <div className='hr-container'>
+          <hr></hr>
+        </div>
+        <div className='heading-container'>
+          <h2>Education</h2>
+        </div>
         <Education
           previewMode={previewMode}
           education={education}
           setUpdate={this.setUpdate}
-        >
-
-        </Education>
+        />
+        <div className='heading-container'>
+        <button
+          onClick={(e) => this.onCreateExperienceBlock(e)}
+        >Add Education</button>
+        </div>
       </div>
     );
   }

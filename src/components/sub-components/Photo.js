@@ -2,10 +2,6 @@ import React, { useState, useRef } from 'react';
 import defaultImage from '../../assets/default-photo.png'
 
 const Photo = (props) => {
-    let { 
-        previewMode,
-    } = props; 
-    
     const inputRef = useRef();
     const [photoData, setPhotoData] = useState(null);
     const [photoUploaded, setPhotoUploaded] = useState(0);

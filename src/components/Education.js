@@ -4,8 +4,9 @@ import InputBox from './sub-components/InputBox'
 
 const EducationContainer = styled.div`
     display: grid;
+    margin: auto;
     background: white;
-    width: 100%;
+    grid-template-columns: auto auto;
 `
 
 const Education = (props) => {
@@ -16,12 +17,14 @@ const Education = (props) => {
     } = props; 
 
     return (
+        <div className='cv-content-container'>
         <EducationContainer>
             {education.map(item => {
                  return (
                 <InputBox
                     id={item.id}
                     key={item.id}
+                    placeholder={item.placeholder}
                     FAicon={item.icon}
                     value={item.value}
                     previewMode={previewMode}
@@ -32,6 +35,7 @@ const Education = (props) => {
         })
     }
         </EducationContainer>
+    </div>
     )
 }
 

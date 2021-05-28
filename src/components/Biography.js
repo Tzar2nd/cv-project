@@ -23,11 +23,12 @@ const Biography = (props) => {
         >
             {biography.map(item => {
 
-            if (selection.includes(item.id)) {
+            if (selection.includes(item.placeholder)) {
                 return (
                     <InputBox
                         id={item.id}
                         key={item.id}
+                        placeholder={item.placeholder}
                         FAicon={item.icon}
                         value={item.value}
                         size={item.size}
