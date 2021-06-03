@@ -1,41 +1,31 @@
 import '../App.css'
 import styled from 'styled-components'
-import InputBox from './sub-components/InputBox'
+import EducationBlock from './EducationBlock'
 
 const EducationContainer = styled.div`
-    display: grid;
-    margin: auto;
-    background: white;
-    grid-template-columns: auto auto;
 `
 
-const Education = (props) => {
-    let {
-        previewMode, 
-        education,
-        setUpdate,
-    } = props; 
+const Education = ({previewMode, education, onChange, onAdd, onDelete}) => {
+
+    const educationItems = education.map((item) => (
+        <EducationBlock 
+            id={item.id}
+            key={item.id}
+            item={item}
+            previewMode={previewMode}
+            onChange={onChange}
+            onDelete={onDelete}
+        />
+    ))
 
     return (
-        <div className='cv-content-container'>
-        <EducationContainer>
-            {education.map(item => {
-                 return (
-                <InputBox
-                    id={item.id}
-                    key={item.id}
-                    placeholder={item.placeholder}
-                    FAicon={item.icon}
-                    value={item.value}
-                    previewMode={previewMode}
-                    previewStyle={item.previewStyle}
-                    setUpdate={setUpdate}
-                /> 
-            )
-        })
-    }
-        </EducationContainer>
-    </div>
+        <div className='cv-education'>
+            <EducationContainer>
+                {educationItems}
+            </EducationContainer>
+            {!previewMode && 
+            <button text='Add' onClick={(e) => onAdd(e)}>Add Education</button>}
+        </div>
     )
 }
 

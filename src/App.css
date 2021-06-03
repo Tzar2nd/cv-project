@@ -11,14 +11,22 @@ h1 {
 
 h2 {
   margin: 0;
-  padding-top: .2rem;
+  margin-top: .75rem;
+}
+
+button {
+  padding: 8px;
+  background: rgb(135, 147, 255);
+  border: 1px solid #333;
+  cursor: pointer;
+  margin: .5rem 0;
 }
 
 .App {
   margin: 0 auto;
   text-align: center;
   width: 800px;
-  background: blue;
+  background: rgb(135, 147, 255);
 }
 
 .preview {
@@ -121,6 +129,11 @@ input:checked + .slider:before {
   background: #fff;
   justify-content: space-between;
   padding: 16px;
+}
+
+.cv-education {
+  margin: 0 200px;
+
 }
 
 .heading-container {
